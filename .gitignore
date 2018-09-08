@@ -1,0 +1,9 @@
+cullpdb25
+database
+model
+test.dnn
+test.log
+test.lst
+*.pyc
+search
+
