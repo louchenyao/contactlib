@@ -3,11 +3,13 @@
 import os
 import sys
 import pickle
+import time
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+import tensorflow.contrib.slim as slim
 
-from common import *
+#from common import *
 from sklearn.metrics import *
 
 from glob import glob
@@ -19,10 +21,11 @@ from tensorflow.python.client import device_lib
 from pyRMSD.RMSDCalculator import RMSDCalculator
 
 
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "0" # used gpu
+clone_id = "1"
 dimin, dimout = 28, 7
 
-dev = [d.name for d in device_lib.list_local_devices() if d.device_type == "GPU"]
-clonesize, numepochs, batchsize, testsize, eps = 2, 1000, 100, 10000, 0.01
 np.random.seed(20180825)
 
 
@@ -85,26 +88,21 @@ def saveCode(value, pdbid, seqnum, ofn):
       f.write(pack("fi" * dimout, *np.stack([value[i], index[i]], axis=1).flatten()))
       f.write(pack("s", "\n"))
 
-
-models = []
+# Define model
 x0 = tf.placeholder(tf.float32, [None, dimin*2], name="x0")
 x1 = tf.placeholder(tf.float32, [None, dimin*2], name="x1")
 y = tf.placeholder(tf.float32, [None, 1], name="y")
 w = tf.placeholder(tf.float32, [None, 1], name="w")
 training = tf.placeholder_with_default(False, [], name="training")
-for i in range(clonesize):
-  with tf.variable_scope("clone%d" % i), tf.device("/gpu:%d" % (i % len(dev))):
-    models.append(buildModel(x0, x1, y, w, dimout, 4, 512, training=training))
+with tf.variable_scope("clone%s" % clone_id): # load clone1 to model
+  model = buildModel(x0, x1, y, w, dimout, 4, 512, training=training)
 
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-sess = tf.Session(config=config)
-saver = tf.train.Saver(max_to_keep=numepochs-10)
-sess.run(tf.global_variables_initializer())
-train_ops = [m['train'] for m in models]
-
+# Load model
+variables = slim.get_variables_to_restore()
+#print variables
+sess = tf.Session() 
+saver = tf.train.Saver(variables)
 saver.restore(sess, "model/encoder")
-model = models[1]
 
 with open("model/pca-coef.pickle", "rb") as f:
   _ = pickle.load(f)
@@ -121,19 +119,29 @@ with open("model/filter33.lst", "r") as f:
   for line in f:
     sslst[line.strip()] = 1
 
+start = time.time()
+
 pdbfn = sys.argv[1]
 pdbid = sys.argv[2]
 ofn = sys.argv[3]
 
+pdb_start = time.time()
 dist, coord, res, ss, idx, _, _ = loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0)
+pdb_end = time.time()
 index = np.array(filter(ss, sslst))
 if np.any(index):
   idx = idx[index]
   dist = dist[index]
   distpca = pca.transform(dist)
   data = np.concatenate([dist, distpca], axis=-1)
+  nn_start = time.time()
   distdnn = sess.run(model['code'], feed_dict={training: False, x0: data})
+  nn_end = time.time()
   saveCode(distdnn, pdbid, idx, ofn)
 
-print "#done!!!"
+end = time.time()
 
+print "#done!!!"
+print "# ", end - start
+print "#pdb ", pdb_end - pdb_start
+print "#nn ", nn_end - nn_start
