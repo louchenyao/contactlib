@@ -5,6 +5,7 @@ test.dnn
 test.log
 test.lst
 *.pyc
-search
+src/search/search
 .vscode
 libsearch.so
+test_log_std

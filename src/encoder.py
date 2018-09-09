@@ -18,7 +18,6 @@ from itertools import combinations
 from sklearn.decomposition import PCA
 from scipy.spatial.distance import squareform
 from tensorflow.python.client import device_lib
-from pyRMSD.RMSDCalculator import RMSDCalculator
 
 
 
