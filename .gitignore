@@ -6,4 +6,5 @@ test.log
 test.lst
 *.pyc
 search
-
+.vscode
+libsearch.so
