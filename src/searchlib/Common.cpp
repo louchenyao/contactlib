@@ -2,6 +2,7 @@
 #define COMMON
 
 #include "Library.h"
+#include "Common.h"
 
 using namespace std;
 

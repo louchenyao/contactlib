@@ -1,5 +1,5 @@
 #include "Library.h"
-#include "Common.cpp"
+#include "Common.h"
 
 #include <boost/dynamic_bitset.hpp>
 

@@ -9,7 +9,7 @@ import pandas as pd
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
 
-#from common import *
+from common import *
 from sklearn.metrics import *
 
 from glob import glob
