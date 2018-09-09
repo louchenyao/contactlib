@@ -7,7 +7,7 @@ using namespace std;
 int main(int argc, char **args)
 {
   // parse parameters
-  assert(argc == 3);
+  assert(argc == 4);
   int index = 1;
   string tfn = args[index++];
   string dbfn = args[index++];

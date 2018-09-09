@@ -21,7 +21,7 @@ struct Database
     sizePROT = 0;
     sizeCONT = 0;
   }
-  void indexContact2Protein(const int &indexContact, int &indexProtein, int &pbegin);
+  void indexContact2Protein(const int &indexContact, int &indexProtein, int &pbegin, int &pend);
   void loadDB(const char *dbfn);
   void processDB(const int &cutoff);
   void search(const string &tfn);

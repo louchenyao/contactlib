@@ -53,10 +53,8 @@ void loadTarget(const string &tfn)
 // end target
 
 // begin database
-void Database::indexContact2Protein(const int &indexContact, int &indexProtein, int &pbegin)
+void Database::indexContact2Protein(const int &indexContact, int &indexProtein, int &pbegin, int &pend)
 {
-  int pend = psize[indexProtein];
-
   // reset
   if (indexContact < pbegin)
   {
@@ -171,6 +169,7 @@ void Database::search(const string &tfn)
   boost::dynamic_bitset<> bscontact(sizeCONT);
   int indexProtein = 0;
   int pbegin = 0; // for indexContac2Proteion;
+  int pend = psize[0];
 
 
   // find alignments, calculate number of target/database hits
@@ -188,7 +187,8 @@ void Database::search(const string &tfn)
     int indexPrev = -1;
     for (int j = bscontact.find_first(); j != bscontact.npos; j = bscontact.find_next(j))
     {
-      indexContact2Protein(j, indexProtein, pbegin);
+      indexContact2Protein(j, indexProtein, pbegin, pend);
+      //cerr << indexProtein << endl;
       hits[indexProtein]++;
       if (indexProtein == indexPrev)
         continue;
@@ -198,7 +198,7 @@ void Database::search(const string &tfn)
   }
   for (int i = bsstruct.find_first(); i != bsstruct.npos; i = bsstruct.find_next(i))
   {
-    indexContact2Protein(i, indexProtein, pbegin);
+    indexContact2Protein(i, indexProtein, pbegin, pend);
     dbhits[indexProtein]++;
   }
 
