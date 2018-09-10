@@ -1,5 +1,3 @@
-#!/usr/bin/env python2
-
 import os
 import sys
 import numpy as np
@@ -67,7 +65,7 @@ def encode(ss):
 
 def filter(ss, lst):
   index = []
-  fraglen = ss.shape[-1] / 2
+  fraglen = int(ss.shape[-1] / 2) # In Python3, fraglen is float due to division.
   for i in ss:
     code0 = encode(i[:fraglen])
     code1 = encode(i[-fraglen:])

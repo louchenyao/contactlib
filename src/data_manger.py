@@ -18,6 +18,14 @@ os.makedirs(TMP, exist_ok=True)
 
 ASSETS = {
     "contactlib-l4-g0-c2-d7.db": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/contactlib-l4-g0-c2-d7.db",
+
+    "encoder.data-00000-of-00001": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.data-00000-of-00001",
+    "encoder.index": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.index",
+    "encoder.meta": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.meta",
+
+    "filter33.lst": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/filter33.lst",
+    "pca-coef.pickle": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/pca-coef.pickle",
+
     "test.dnn": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/test.dnn",
     "test.log": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/test.log",
 }
