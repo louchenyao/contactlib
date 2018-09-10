@@ -12,5 +12,5 @@ rm -f test.*
 # if high-quality hits found, no need to continue
 
 time src/encoder.py cullpdb25/aa/3aa0a.pdb 3aa0a test.dnn
-time src/search/main.py test.dnn database/contactlib-l4-g0-c2-d7.db 12 test.log
+time src/search/main.py test.dnn test.log
 diff test.log test_log_std
