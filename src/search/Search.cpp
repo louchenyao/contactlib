@@ -14,7 +14,7 @@ typedef struct
   int index;
 } Element;
 
-void loadTarget(const char *tfn, vector<string> &tid, vector<vector<float>> tdist, vector<vector<int>> tindex)
+void loadTarget(const char *tfn, vector<string> &tid, vector<vector<float> > &tdist, vector<vector<int> > &tindex)
 {
   cerr << "loading target " << tfn << " ..." << endl;
   tid.clear();
