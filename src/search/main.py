@@ -2,7 +2,7 @@
 
 from __future__ import print_function, absolute_import
 
-from search import Searcher
+from src.search import Searcher
 
 import sys
 
@@ -12,7 +12,7 @@ def main():
     cutoff = int(sys.argv[3])
     result_fn = sys.argv[4]
 
-    s = Searcher(db_fn, cutoff)
+    s = Searcher()
     s.search(target_fn, result_fn)
 
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PYTHONPATH=$(pwd)/src
+export PYTHONPATH=$(pwd)
 
 cd src/search
 make
