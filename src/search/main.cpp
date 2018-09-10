@@ -24,5 +24,6 @@ int main(int argc, char **args)
     cerr << "#working on target " << tfnIndex << "/" << tfns.size() << endl;
     search(db, tfns[tfnIndex].c_str(), res_fn.c_str());
   }
+  deleteDB(db);
   cerr << "done!!!" << endl;
 }

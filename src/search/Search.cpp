@@ -6,12 +6,7 @@
 
 using namespace std;
 
-const int sizeDIM = 7;                    // number of dimensions
-
-// begin target
-vector<string> tid;          // target contact group id
-vector<vector<float> > tdist; // target contact group distance vectors
-vector<vector<int> > tindex;  // target contact group distance vectors
+const int sizeDIM = 7; // number of dimensions
 
 typedef struct
 {
@@ -19,7 +14,7 @@ typedef struct
   int index;
 } Element;
 
-void loadTarget(const char *tfn)
+void loadTarget(const char *tfn, vector<string> &tid, vector<vector<float>> tdist, vector<vector<int>> tindex)
 {
   cerr << "loading target " << tfn << " ..." << endl;
   tid.clear();
@@ -50,9 +45,7 @@ void loadTarget(const char *tfn)
   in.close();
   cerr << "--size: " << tid.size() << endl;
 }
-// end target
 
-// begin database
 void Database::indexContact2Protein(const int &indexContact, int &indexProtein, int &pbegin, int &pend)
 {
   // reset
@@ -77,7 +70,7 @@ void Database::loadDB(const char *dbfn)
   cerr << "loading database " << dbfn << " ..." << endl;
   static const int MAX_BITSET_SIZE = 1024 * 1024;
   boost::dynamic_bitset<> v3(MAX_BITSET_SIZE);
-  vector<boost::dynamic_bitset<> > v2;
+  vector<boost::dynamic_bitset<>> v2;
   for (int i = 0; i <= sizeSLOT; i++)
     v2.push_back(v3);
   for (int i = 0; i < sizeDIM; i++)
@@ -132,7 +125,7 @@ void Database::processDB(const int &cutoff)
 {
   cerr << "processing database with cutoff " << cutoff << " ..." << endl;
   boost::dynamic_bitset<> bsdimension(sizeCONT);
-  vector<boost::dynamic_bitset<> > bsslot;
+  vector<boost::dynamic_bitset<>> bsslot;
   for (int i = 0; i < sizeSLOT; i++)
     bsslot.push_back(bsdimension);
 
@@ -158,7 +151,10 @@ void Database::processDB(const int &cutoff)
 
 void Database::search(const char *tfn, const char *res_fn)
 {
-  loadTarget(tfn);
+  vector<string> tid;          // target contact group id
+  vector<vector<float>> tdist; // target contact group distance vectors
+  vector<vector<int>> tindex;  // target contact group distance vectors
+  loadTarget(tfn, tid, tdist, tindex);
   int thits[sizePROT]; // pdbid, number of target hits
   memset(thits, 0, sizeof(int) * sizePROT);
   int dbhits[sizePROT]; // pdbid, number of database hits
@@ -170,7 +166,6 @@ void Database::search(const char *tfn, const char *res_fn)
   int indexProtein = 0;
   int pbegin = 0; // for indexContac2Proteion;
   int pend = psize[0];
-
 
   // find alignments, calculate number of target/database hits
   cerr << "looking for alignments ..." << endl;
@@ -213,21 +208,26 @@ void Database::search(const char *tfn, const char *res_fn)
   res.close();
 }
 
-void search(void *db, const char *target_fn, const char *resutl_fn) {
-  ((Database*)(db))->search(target_fn, resutl_fn);
+// extern "C" {
+
+void search(void *db, const char *target_fn, const char *resutl_fn)
+{
+  ((Database *)(db))->search(target_fn, resutl_fn);
 }
 
 // We want to export C style ABI, Database isn't.
 // So return void* instead of Database*.
-void *newDB(const char *db_path, int cutoff)
+void *newDB(const char *db_fn, int cutoff)
 {
   Database *db = new Database();
-  db->loadDB(db_path);
+  db->loadDB(db_fn);
   db->processDB(cutoff);
   return (void *)db;
 }
 
-void deleteDB(void *db) {
-  delete ((Database*)(db));
+void deleteDB(void *db)
+{
+  delete ((Database *)(db));
 }
-// end database
+
+// } // extern "C"
