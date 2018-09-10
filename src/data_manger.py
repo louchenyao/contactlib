@@ -27,6 +27,7 @@ def randomword(len=10):
    letters = string.ascii_lowercase
    return ''.join(random.choice(letters) for i in range(len))
 
+# TODO: check integrity
 # copyright: https://stackoverflow.com/a/16696317
 def download(p, url):
     tmp_p = os.path.join(os.path.join(TMP), randomword(10))
@@ -45,7 +46,7 @@ def asset_path(name, auto_download=True):
     if os.path.isfile(p):
         return p
     elif auto_download:
-        logger.info("%s does not exits, downloading it..." % name)
+        logger.info("%s does not exist, downloading it..." % name)
         download(p, ASSETS[name])
         return p
     else:
