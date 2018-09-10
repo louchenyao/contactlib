@@ -1,6 +1,6 @@
 CPP=g++ -O3 --std=c++11 -fPIC
 
-all: search
+all: libsearch.so
 
 search: main.cpp libsearch.so Search.h Common.h
 	$(CPP) -o $@ main.cpp -L. -lsearch

@@ -155,12 +155,9 @@ void Database::search(const char *tfn, const char *res_fn)
   vector<vector<float>> tdist; // target contact group distance vectors
   vector<vector<int>> tindex;  // target contact group distance vectors
   loadTarget(tfn, tid, tdist, tindex);
-  int thits[sizePROT]; // pdbid, number of target hits
-  memset(thits, 0, sizeof(int) * sizePROT);
-  int dbhits[sizePROT]; // pdbid, number of database hits
-  memset(dbhits, 0, sizeof(int) * sizePROT);
-  int hits[sizePROT]; // pdbid, number of hits between target and database
-  memset(hits, 0, sizeof(int) * sizePROT);
+  vector<int> thits(sizePROT, 0); // pdbid, number of target hits
+  vector<int> dbhits(sizePROT, 0); // pdbid, number of database hits
+  vector<int> hits(sizePROT, 0);  // pdbid, number of hits between target and database
   boost::dynamic_bitset<> bsstruct(sizeCONT);
   boost::dynamic_bitset<> bscontact(sizeCONT);
   int indexProtein = 0;
@@ -200,7 +197,7 @@ void Database::search(const char *tfn, const char *res_fn)
   // output
   cerr << "printing alignments ..." << endl;
   fstream res;
-  res.open(res_fn, fstream::out | std::fstream::app);
+  res.open(res_fn, fstream::out | fstream::app);
   for (int i = 0; i < sizePROT; i++)
   {
     res << tid[0].substr(0, tid[0].find(":")) << "\t" << pid[i] << "\t" << sqrt(1.0 * thits[i] * dbhits[i] / tid.size() / psize[i]) << endl;
@@ -212,17 +209,18 @@ void Database::search(const char *tfn, const char *res_fn)
 
 void search(void *db, const char *target_fn, const char *resutl_fn)
 {
+  cerr << __LINE__ << " " << db << endl;
   ((Database *)(db))->search(target_fn, resutl_fn);
 }
 
 // We want to export C style ABI, Database isn't.
 // So return void* instead of Database*.
-void *newDB(const char *db_fn, int cutoff)
+void* newDB(const char *db_fn, int cutoff)
 {
   Database *db = new Database();
   db->loadDB(db_fn);
   db->processDB(cutoff);
-  return (void *)db;
+  return (void*)db;
 }
 
 void deleteDB(void *db)
