@@ -24,10 +24,11 @@ struct Database
   void indexContact2Protein(const int &indexContact, int &indexProtein, int &pbegin, int &pend);
   void loadDB(const char *dbfn);
   void processDB(const int &cutoff);
-  void search(const string &tfn);
+  void search(const char *tfn, const char *res_fn);
 };
 
 extern "C" {
-  void* newDB(const char *db_path, int cutoff);
+  void* newDB(const char *db_fn, int cutoff);
   void deleteDB(void *db);
+  void search(void *db, const char *target_fn, const char *resutl_fn);
 }

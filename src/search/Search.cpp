@@ -19,13 +19,13 @@ typedef struct
   int index;
 } Element;
 
-void loadTarget(const string &tfn)
+void loadTarget(const char *tfn)
 {
   cerr << "loading target " << tfn << " ..." << endl;
   tid.clear();
   tdist.clear();
   tindex.clear();
-  ifstream in(tfn.c_str());
+  ifstream in(tfn);
   assert(in.is_open());
   string id;
   while (in >> id)
@@ -156,7 +156,7 @@ void Database::processDB(const int &cutoff)
   }
 }
 
-void Database::search(const string &tfn)
+void Database::search(const char *tfn, const char *res_fn)
 {
   loadTarget(tfn);
   int thits[sizePROT]; // pdbid, number of target hits
@@ -204,10 +204,17 @@ void Database::search(const string &tfn)
 
   // output
   cerr << "printing alignments ..." << endl;
+  fstream res;
+  res.open(res_fn, fstream::out | std::fstream::app);
   for (int i = 0; i < sizePROT; i++)
   {
-    cout << tid[0].substr(0, tid[0].find(":")) << "\t" << pid[i] << "\t" << sqrt(1.0 * thits[i] * dbhits[i] / tid.size() / psize[i]) << endl;
+    res << tid[0].substr(0, tid[0].find(":")) << "\t" << pid[i] << "\t" << sqrt(1.0 * thits[i] * dbhits[i] / tid.size() / psize[i]) << endl;
   }
+  res.close();
+}
+
+void search(void *db, const char *target_fn, const char *resutl_fn) {
+  ((Database*)(db))->search(target_fn, resutl_fn);
 }
 
 // We want to export C style ABI, Database isn't.
