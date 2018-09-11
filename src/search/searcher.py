@@ -11,7 +11,7 @@ class Searcher(object):
         contactlib-l4-g0-c2-d7.db as default database.
         """
         if db_fn is None:
-            db_fn = asset_path("contactlib-l4-g0-c2-d7.db", auto_download=True)
+            db_fn = asset_path("contactlib-l4-g0-c2-d7.db")
 
         cur_dir = os.path.dirname(os.path.realpath(__file__))
         lib_fn = os.path.join(cur_dir, "libsearch.so")

@@ -7,12 +7,14 @@ from Bio.PDB.PDBParser import *
 from Bio.PDB.Polypeptide import *
 from scipy.spatial.distance import *
 
+from src.data_manger import asset_path
+
 
 def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
   model = PDBParser(PERMISSIVE=1).get_structure("XXXX", pdbfn)[0]
   dsspfn = pdbfn.replace(".pdb", ".dssp")
   if os.path.isfile(dsspfn): dssp, keys = make_dssp_dict(dsspfn)
-  else: dssp, keys = dssp_dict_from_pdb_file(pdbfn, DSSP='dssp-2-linux-amd64')
+  else: dssp, keys = dssp_dict_from_pdb_file(pdbfn, DSSP=asset_path("dssp-2.0.4-linux-amd64"))
 
   idx, res, ss, coord = [], [], [], []
   for k in keys:
