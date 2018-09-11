@@ -10,6 +10,7 @@ import tensorflow.contrib.slim as slim
 from sklearn.metrics import *
 
 from src.common import *
+from src.data_manger import asset_path
 from src.model import buildModel
 
 def val2idx(value):
@@ -51,12 +52,17 @@ with graph.as_default():
 class Encoder(object):
     def __init__(self, tf_sess_target=""):
         with graph.as_default():
+            asset_path("encoder.index")
+            asset_path("encoder.meta")
+            p = asset_path("encoder.data-00000-of-00001")
+            p = os.path.join(os.path.dirname(p), "encoder")
+
             self.sess = tf.Session(tf_sess_target)
             variables = slim.get_variables_to_restore()
             saver = tf.train.Saver(variables)
-            saver.restore(self.sess, "model/encoder")
+            saver.restore(self.sess, p)
 
-        with open("model/pca-coef.pickle", "rb") as f:
+        with open(asset_path("filter33.lst"), "rb") as f:
         # encoding='latin1' fixs the incompatibility of numpy between Python 2 and 3
         # see more: https://stackoverflow.com/a/41366785
             _ = pickle.load(f, encoding='latin1')
@@ -69,7 +75,7 @@ class Encoder(object):
             self.pca = pickle.load(f, encoding='latin1')
 
         self.sslst = {}
-        with open("model/filter33.lst", "r") as f:
+        with open(asset_path("filter33.lst"), "r") as f:
             for line in f:
                 self.sslst[line.strip()] = 1
 
