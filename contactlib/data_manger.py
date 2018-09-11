@@ -38,6 +38,9 @@ ASSETS = {
     "pca-coef.pickle": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/pca-coef.pickle"),
 
     "dssp-2.0.4-linux-amd64": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/dssp-2.0.4-linux-amd64", executable=True),
+    "dssp-2.0.4-macOS": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/dssp-2.0.4-macOS", executable=True),
+    "libsearch-2.0-macOS.so": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/libsearch-2.0-macOS.so"),
+    "libsearch-2.0-linux-amd64.so": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/libsearch-2.0-linux-amd64.so"),
 
     "3aa0a.pdb": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/3aa0a.pdb")
 }

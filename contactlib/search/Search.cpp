@@ -197,7 +197,7 @@ void Database::search(const char *tfn, const char *res_fn)
   // output
   cerr << "printing alignments ..." << endl;
   fstream res;
-  res.open(res_fn, fstream::out | fstream::app);
+  res.open(res_fn, fstream::out);
   for (int i = 0; i < sizePROT; i++)
   {
     res << tid[0].substr(0, tid[0].find(":")) << "\t" << pid[i] << "\t" << sqrt(1.0 * thits[i] * dbhits[i] / tid.size() / psize[i]) << endl;
