@@ -2,6 +2,7 @@ from __future__ import print_function, absolute_import
 
 import os
 import sys
+import string
 import pickle
 from struct import pack
 
@@ -63,7 +64,7 @@ class Encoder(object):
             saver = tf.train.Saver(variables)
             saver.restore(self.sess, p)
 
-        with open(asset_path("filter33.lst"), "rb") as f:
+        with open(asset_path("pca-coef.pickle"), "rb") as f:
         # encoding='latin1' fixs the incompatibility of numpy between Python 2 and 3
         # see more: https://stackoverflow.com/a/41366785
             def load(f):
@@ -88,7 +89,12 @@ class Encoder(object):
     def __del__(self):
         self.sess.close()
 
-    def encode(self, pdb_fn, pdb_id, output_fn):
+    def encode(self, pdb_fn, output_fn, pdb_id=None):
+        if not pdb_id:
+            pdb_id = os.path.basename(pdb_fn).split(".")[0]
+            pdb_id = "".join(c for c in pdb_id if c in string.ascii_letters or c in string.digits)
+            if not pdb_id:
+                pdb_id = "target"
         dist, coord, res, ss, idx, _, _ = loadPDB(pdb_fn, fraglen=4, mingap=0, mincont=2, maxdist=16.0)
         index = np.array(filter(ss, self.sslst))
         if np.any(index):

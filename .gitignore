@@ -9,3 +9,6 @@ src/search/search
 .vscode
 libsearch.so
 test_log_std
+.DS_Store
+*.fingerprint
+result.txt

@@ -9,7 +9,7 @@ import string
 import shutil
 
 HOME = os.getenv("HOME")
-DATA = os.path.join(HOME, ".cache", "protein_search")
+DATA = os.path.join(HOME, ".cache", "contactlib")
 TMP = os.path.join(DATA, "tmp")
 
 # For Python2 compatibility
@@ -31,8 +31,9 @@ ASSETS = {
     "filter33.lst": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/filter33.lst",
     "pca-coef.pickle": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/pca-coef.pickle",
 
-    "test.dnn": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/test.dnn",
-    "test.log": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/test.log",
+    "dssp": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/dssp-2.0.4-linux-amd64",
+
+    "3aa0a.pdb": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/3aa0a.pdb"
 }
 
 # copyright: https://stackoverflow.com/a/2030081
