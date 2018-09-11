@@ -34,7 +34,7 @@ ASSETS = {
 
     "encoder.data-00000-of-00001": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.data-00000-of-00001", md5="6262b90c210c148985cbe5adf8aee440"),
     "encoder.index": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.index", md5="b93d2df4196facec2dd4aa96c159dc0a"),
-    "encoder.meta": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.meta", md5="b93d2df4196facec2dd4aa96c159dc0a"),
+    "encoder.meta": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/encoder.meta", md5="c9f415d5fd6c4cc76a1a890a1b82483d"),
 
     "filter33.lst": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/filter33.lst", md5="ade14361f61c8038398c9e69318c7a7a"),
     "pca-coef.pickle": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/pca-coef.pickle", md5="3ef8ac406edfead3ff2e5d01b211e611"),

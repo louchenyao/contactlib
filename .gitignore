@@ -12,3 +12,6 @@ test_log_std
 .DS_Store
 *.fingerprint
 result.txt
+build
+MANIFEST
+dist

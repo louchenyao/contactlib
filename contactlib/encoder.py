@@ -9,7 +9,6 @@ from struct import pack
 import numpy as np
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
-from sklearn.metrics import *
 
 from contactlib.common import *
 from contactlib.data_manger import asset_path
