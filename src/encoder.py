@@ -1,6 +1,7 @@
 from __future__ import print_function, absolute_import
 
 import os
+import sys
 import pickle
 from struct import pack
 
@@ -65,14 +66,19 @@ class Encoder(object):
         with open(asset_path("filter33.lst"), "rb") as f:
         # encoding='latin1' fixs the incompatibility of numpy between Python 2 and 3
         # see more: https://stackoverflow.com/a/41366785
-            _ = pickle.load(f, encoding='latin1')
-            _ = pickle.load(f, encoding='latin1')
-            _ = pickle.load(f, encoding='latin1')
-            _ = pickle.load(f, encoding='latin1')
-            _ = pickle.load(f, encoding='latin1')
-            _ = pickle.load(f, encoding='latin1')
-            self.coef = pickle.load(f, encoding='latin1')
-            self.pca = pickle.load(f, encoding='latin1')
+            def load(f):
+                if sys.version_info.major == 2:
+                    return pickle.load(f)
+                else:
+                    return pickle.load(f, encoding='latin1')
+            _ = load(f)
+            _ = load(f)
+            _ = load(f)
+            _ = load(f)
+            _ = load(f)
+            _ = load(f)
+            self.coef = load(f)
+            self.pca = load(f)
 
         self.sslst = {}
         with open(asset_path("filter33.lst"), "r") as f:

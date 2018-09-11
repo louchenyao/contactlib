@@ -12,9 +12,14 @@ HOME = os.getenv("HOME")
 DATA = os.path.join(HOME, ".cache", "protein_search")
 TMP = os.path.join(DATA, "tmp")
 
-os.makedirs(DATA, exist_ok=True)
+# For Python2 compatibility
+def mkdirp(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+mkdirp(DATA)
 shutil.rmtree(TMP, ignore_errors=True)
-os.makedirs(TMP, exist_ok=True)
+mkdirp(TMP)
 
 ASSETS = {
     "contactlib-l4-g0-c2-d7.db": "https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/contactlib-l4-g0-c2-d7.db",
