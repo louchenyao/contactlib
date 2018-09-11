@@ -7,7 +7,7 @@ from Bio.PDB.PDBParser import *
 from Bio.PDB.Polypeptide import *
 from scipy.spatial.distance import *
 
-from src.data_manger import asset_path
+from contactlib.data_manger import asset_path
 
 
 def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):

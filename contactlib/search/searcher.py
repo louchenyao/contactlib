@@ -1,6 +1,6 @@
 from __future__ import print_function, absolute_import
 
-from src.data_manger import asset_path
+from contactlib.data_manger import asset_path
 
 import os
 from ctypes import CDLL, c_uint64

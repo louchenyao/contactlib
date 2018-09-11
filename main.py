@@ -4,8 +4,8 @@ from __future__ import print_function, absolute_import
 
 import sys
 
-from src import Searcher, Encoder
-from src.data_manger import asset_path
+from contactlib import Searcher, Encoder
+from contactlib.data_manger import asset_path
 
 e = Encoder()
 s = Searcher()

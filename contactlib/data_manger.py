@@ -7,7 +7,7 @@ import shutil
 import stat
 import string
 
-from src import logger
+from contactlib import logger
 
 HOME = os.getenv("HOME")
 DATA = os.path.join(HOME, ".cache", "contactlib")

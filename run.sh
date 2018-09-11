@@ -2,7 +2,7 @@
 
 export PYTHONPATH=$(pwd)
 
-cd src/search
+cd contactlib/search
 make
 cd ../..
 

@@ -11,9 +11,9 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 from sklearn.metrics import *
 
-from src.common import *
-from src.data_manger import asset_path
-from src.model import buildModel
+from contactlib.common import *
+from contactlib.data_manger import asset_path
+from contactlib.model import buildModel
 
 def val2idx(value):
   vmin, vmax, nslot = -8.0, 8.0, 160
