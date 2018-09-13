@@ -10,19 +10,48 @@ from scipy.spatial.distance import *
 
 from contactlib.data_manger import asset_path
 
-
-def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
+def dssp_exe():
   if platform.system() == "Darwin":
-    dssp_exe = asset_path("dssp-2.0.4-macOS")
+    return asset_path("dssp-2.0.4-macOS")
   elif platform.system() == "Linux":
-    dssp_exe = asset_path("dssp-2.0.4-linux-amd64")
+    return asset_path("dssp-2.0.4-linux-amd64")
   else:
     raise Exception("Unsupported platform! Please try it under Linux.")
 
+def convertPDB(pdbfn):
+  pdbid = os.path.basename(pdbfn).replace(".pdb", "").upper()
+  model = PDBParser(PERMISSIVE=1).get_structure(pdbid, pdbfn)[0]
+
+  dsspfn = pdbfn.replace(".pdb", ".dssp")
+  subprocess.check_call([dssp_exe(), '-i', pdbfn, '-o', dsspfn])
+
+  dssp, keys = make_dssp_dict(dsspfn)
+  idx, res, ss = [], [], []
+  for k in keys:
+    try:
+      i, r, s, c = k[1][1], dssp[k][0], dssp[k][1], model[k[0]][k[1]]["CA"].get_coord()
+      idx.append(i)
+      res.append(r)
+      ss.append(s)
+    except KeyError: pass
+
+  fafn = pdbfn.replace(".pdb", ".fa")
+  with open(fafn, "w") as f:
+    f.write(">%s\n" % pdbid)
+    tmp = "".join(res)
+    while tmp:
+      if len(tmp) > 120:
+        f.write("%s\n" % tmp[:120])
+        tmp = tmp[120:]
+      else:
+        f.write("%s\n" % tmp)
+        tmp = ""
+
+def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
   model = PDBParser(PERMISSIVE=1).get_structure("XXXX", pdbfn)[0]
   dsspfn = pdbfn.replace(".pdb", ".dssp")
   if os.path.isfile(dsspfn): dssp, keys = make_dssp_dict(dsspfn)
-  else: dssp, keys = dssp_dict_from_pdb_file(pdbfn, DSSP=dssp_exe)
+  else: dssp, keys = dssp_dict_from_pdb_file(pdbfn, DSSP=dssp_exe())
 
   idx, res, ss, coord = [], [], [], []
   for k in keys:
