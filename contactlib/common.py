@@ -10,20 +10,20 @@ from scipy.spatial.distance import *
 
 from contactlib.data_manger import asset_path
 
-def dssp_exe():
+
+def convertPDB(pdbfn):
   if platform.system() == "Darwin":
-    return asset_path("dssp-2.0.4-macOS")
+    cmd = asset_path("dssp-2.0.4-macOS")
   elif platform.system() == "Linux":
-    return asset_path("dssp-2.0.4-linux-amd64")
+    cmd = asset_path("dssp-2.0.4-linux-amd64")
   else:
     raise Exception("Unsupported platform! Please try it under Linux.")
 
-def convertPDB(pdbfn):
   pdbid = os.path.basename(pdbfn).replace(".pdb", "").upper()
   model = PDBParser(PERMISSIVE=1).get_structure(pdbid, pdbfn)[0]
 
   dsspfn = pdbfn.replace(".pdb", ".dssp")
-  subprocess.check_call([dssp_exe(), '-i', pdbfn, '-o', dsspfn])
+  subprocess.check_call([cmd, '-i', pdbfn, '-o', dsspfn])
 
   dssp, keys = make_dssp_dict(dsspfn)
   idx, res, ss = [], [], []
@@ -48,10 +48,11 @@ def convertPDB(pdbfn):
         tmp = ""
 
 def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
-  model = PDBParser(PERMISSIVE=1).get_structure("XXXX", pdbfn)[0]
+  pdbid = os.path.basename(pdbfn).replace(".pdb", "").upper()
+  model = PDBParser(PERMISSIVE=1).get_structure(pdbid, pdbfn)[0]
+
   dsspfn = pdbfn.replace(".pdb", ".dssp")
-  if os.path.isfile(dsspfn): dssp, keys = make_dssp_dict(dsspfn)
-  else: dssp, keys = dssp_dict_from_pdb_file(pdbfn, DSSP=dssp_exe())
+  dssp, keys = make_dssp_dict(dsspfn)
 
   idx, res, ss, coord = [], [], [], []
   for k in keys:
