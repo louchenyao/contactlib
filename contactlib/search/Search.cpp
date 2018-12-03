@@ -149,6 +149,17 @@ void Database::processDB(const int &cutoff)
   }
 }
 
+struct OutputEntry {
+  string a, b;
+  double score;
+
+  OutputEntry(string a, string b, double s):a(a), b(b), score(s) {}
+  
+  bool operator < (const OutputEntry & e) const {
+    return score > e.score;
+  }
+};
+
 void Database::search(const char *tfn, const char *res_fn)
 {
   vector<string> tid;          // target contact group id
@@ -198,9 +209,14 @@ void Database::search(const char *tfn, const char *res_fn)
   cerr << "printing alignments ..." << endl;
   fstream res;
   res.open(res_fn, fstream::out);
+  vector<OutputEntry> oe;
   for (int i = 0; i < sizePROT; i++)
   {
-    res << tid[0].substr(0, tid[0].find(":")) << "\t" << pid[i] << "\t" << sqrt(1.0 * thits[i] * dbhits[i] / tid.size() / psize[i]) << endl;
+    oe.push_back(OutputEntry(tid[0].substr(0, tid[0].find(":")), pid[i], sqrt(1.0 * thits[i] * dbhits[i] / tid.size() / psize[i]))); 
+  }
+  sort(oe.begin(), oe.end());
+  for (int i = 0; i < oe.size(); i++) {
+    res << oe[i].a << "\t" << oe[i].b << "\t" << oe[i].score << endl;
   }
   res.close();
 }

@@ -52,6 +52,9 @@ def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
   model = PDBParser(PERMISSIVE=1).get_structure(pdbid, pdbfn)[0]
 
   dsspfn = pdbfn.replace(".pdb", ".dssp")
+  if not os.path.isfile(dsspfn):
+    convertPDB(pdbfn)
+
   dssp, keys = make_dssp_dict(dsspfn)
 
   idx, res, ss, coord = [], [], [], []
