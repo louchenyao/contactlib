@@ -1,9 +1,9 @@
-from __future__ import print_function, absolute_import
+from __future__ import absolute_import, print_function
 
 import os
-import sys
-import string
 import pickle
+import string
+import sys
 from struct import pack
 
 import numpy as np
@@ -13,6 +13,8 @@ import tensorflow.contrib.slim as slim
 from contactlib.common import *
 from contactlib.data_manger import asset_path
 from contactlib.model import buildModel
+from contactlib.timer import TimeIt
+
 
 def val2idx(value):
   vmin, vmax, nslot = -8.0, 8.0, 160
@@ -51,14 +53,14 @@ with graph.as_default():
 
 
 class Encoder(object):
-    def __init__(self, tf_sess_target=""):
+    def __init__(self, tf_sess_config=None):
         with graph.as_default():
             asset_path("encoder.index")
             asset_path("encoder.meta")
             p = asset_path("encoder.data-00000-of-00001")
             p = os.path.join(os.path.dirname(p), "encoder")
 
-            self.sess = tf.Session(tf_sess_target)
+            self.sess = tf.Session(config=tf_sess_config)
             variables = slim.get_variables_to_restore()
             saver = tf.train.Saver(variables)
             saver.restore(self.sess, p)
@@ -94,12 +96,14 @@ class Encoder(object):
             pdb_id = "".join(c for c in pdb_id if c in string.ascii_letters or c in string.digits)
             if not pdb_id:
                 pdb_id = "target"
-        dist, coord, res, ss, idx, _, _ = loadPDB(pdb_fn, fraglen=4, mingap=0, mincont=2, maxdist=16.0)
+        with TimeIt("loadPDB"):
+            dist, coord, res, ss, idx, _, _ = loadPDB(pdb_fn, fraglen=4, mingap=0, mincont=2, maxdist=16.0)
         index = np.array(filter(ss, self.sslst))
         if np.any(index):
             idx = idx[index]
             dist = dist[index]
             distpca = self.pca.transform(dist)
             data = np.concatenate([dist, distpca], axis=-1)
-            distdnn = self.sess.run(model['code'], feed_dict={training: False, x0: data})
+            with TimeIt("tf_run"):
+                distdnn = self.sess.run(model['code'], feed_dict={training: False, x0: data})
             saveCode(distdnn, pdb_id, idx, output_fn)
