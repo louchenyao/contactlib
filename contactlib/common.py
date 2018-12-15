@@ -75,11 +75,19 @@ def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
 
   with TimeIt("gen data"):
     data = []
-    for j in range(fraglen+mingap, len(dist)-fraglen + 1):
-      for i in range(j-fraglen-mingap + 1):
-        if np.any(dist[i:i+fraglen, i:i+fraglen] >= maxdist): continue
-        if np.any(dist[j:j+fraglen, j:j+fraglen] >= maxdist): continue
+    possible_frag_j_idx = []
+    possible_frag_i_idx = []
+    for j in range(len(dist)-fraglen + 1):
+      if not np.any(dist[j:j+fraglen, j:j+fraglen] >= maxdist):
+        if(j >= fraglen+mingap):
+          possible_frag_j_idx.append(j)
+        possible_frag_i_idx.append(j)
 
+    for j in possible_frag_j_idx:
+      for i in possible_frag_i_idx:
+        if i >= j-fraglen-mingap + 1:
+          break
+          
         if np.any(dist[i:i+fraglen, j:j+fraglen] >= maxdist): continue
         if np.sum(dist[i:i+fraglen, j:j+fraglen] <= 8.0) < mincont: continue
         

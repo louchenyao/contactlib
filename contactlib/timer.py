@@ -1,4 +1,7 @@
+from __future__ import absolute_import, print_function
+
 import time
+
 
 class TimeIt:
     def __init__(self, prompt, auto_start=True):
