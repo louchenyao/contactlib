@@ -83,11 +83,12 @@ def loadPDB(pdbfn, fraglen=4, mingap=0, mincont=2, maxdist=16.0):
           possible_frag_j_idx.append(j)
         possible_frag_i_idx.append(j)
 
-    for j in possible_frag_j_idx:
-      for i in possible_frag_i_idx:
+
+    for i in possible_frag_i_idx:
+      for j in possible_frag_j_idx:
         if i >= j-fraglen-mingap + 1:
-          break
-          
+          continue
+
         if np.any(dist[i:i+fraglen, j:j+fraglen] >= maxdist): continue
         if np.sum(dist[i:i+fraglen, j:j+fraglen] <= 8.0) < mincont: continue
         
