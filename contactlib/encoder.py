@@ -103,7 +103,12 @@ class Encoder(object):
             idx = idx[index]
             dist = dist[index]
             distpca = self.pca.transform(dist)
+            # print(self.pca.n_components)
             data = np.concatenate([dist, distpca], axis=-1)
+            ### restrict search time to ~2.5s
+            if len(data) > 4000:
+                np.random.shuffle(data)
+                data = data[:4000]
             with TimeIt("tf_run"):
                 distdnn = self.sess.run(model['code'], feed_dict={training: False, x0: data})
             saveCode(distdnn, pdb_id, idx, output_fn)
