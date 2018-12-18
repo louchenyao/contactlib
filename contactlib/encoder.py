@@ -107,3 +107,5 @@ class Encoder(object):
             with TimeIt("tf_run"):
                 distdnn = self.sess.run(model['code'], feed_dict={training: False, x0: data})
             saveCode(distdnn, pdb_id, idx, output_fn)
+        else:
+            raise Exception("Not exists any indexable contact groups!")
