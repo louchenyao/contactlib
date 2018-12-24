@@ -15,3 +15,8 @@ result.txt
 build
 MANIFEST
 dist
+*.cl
+*.so
+*.fa
+*.dssp
+*.pdb
