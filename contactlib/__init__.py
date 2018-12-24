@@ -1,3 +1,5 @@
+__version__ = '2.1.2'
+
 import logging
 
 logger = logging.getLogger("protein_search")
