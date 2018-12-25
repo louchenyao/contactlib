@@ -1,4 +1,4 @@
-__version__ = '2.1.2'
+__version__ = '2.1.3'
 
 import logging
 
@@ -6,5 +6,5 @@ logger = logging.getLogger("protein_search")
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler()) # output to stderr
 
-from contactlib.encoder import Encoder
-from contactlib.search import Searcher
+#from contactlib.encoder import Encoder
+#from contactlib.search import Searcher
