@@ -37,7 +37,8 @@ from __future__ import print_function, absolute_import
 
 import sys
 
-from contactlib import Searcher, Encoder
+from contactlib.search import Searcher
+from contactlib.encoder import Encoder
 from contactlib.data_manger import asset_path
 
 e = Encoder()
