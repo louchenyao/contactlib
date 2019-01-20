@@ -13,7 +13,7 @@ except ImportError:
     install_requires.append("tensorflow")
 
 setup(name='contactlib',
-      version="2.1.4",
+      version="2.1.5",
       description='Tool for searching proteins through structural fingerprints.',
       url='https://github.com/Chenyao2333/contactlib',
       packages=['contactlib', 'contactlib.search'],

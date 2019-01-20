@@ -42,7 +42,7 @@ ASSETS = {
     "dssp-2.0.4-linux-amd64": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/dssp-2.0.4-linux-amd64", executable=True, md5="b8dcc06305a64ab4d0265f03de7bb718"),
     "dssp-2.0.4-macOS": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/dssp-2.0.4-macOS", executable=True, md5="3a02711e103a669cdcec6f63d498cd4f"),
     "libsearch-2.1-macOS.so": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/libsearch-2.1-macOS.so", md5="9a5b5ad990b8ba8f5f62d9edc70d9a5e"),
-    "libsearch-2.1-linux-amd64.so": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/libsearch-2.1-linux-amd64.so", md5="5a587342e56112a1260d6c1bda7ab274"),
+    "libsearch-2.2-linux-amd64.so": Assest("https://data00.oss-cn-zhangjiakou.aliyuncs.com/contactlib-public/libsearch-2.2-linux-amd64.so", md5="d6cad717ced0cf95f98b3809682fdd79"),
 
     "3aa0a.pdb": Assest("https://pppublic.oss-cn-beijing.aliyuncs.com/tmp-server/test_assests/3aa0a.pdb", md5="387265f649aad08fadb0591647bdcbc1")
 }

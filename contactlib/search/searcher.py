@@ -23,7 +23,7 @@ class Searcher(object):
             if platform.system() == "Darwin":
                 libsearch = "libsearch-2.1-macOS.so"
             elif platform.system() == "Linux":
-                libsearch = "libsearch-2.1-linux-amd64.so"
+                libsearch = "libsearch-2.2-linux-amd64.so"
             else:
                 raise Exception("Unsupported platform! Please try it under Linux.")
             lib_fn = asset_path(libsearch)
