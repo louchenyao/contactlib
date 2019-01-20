@@ -97,7 +97,6 @@ void Database::loadDB(const char *dbfn)
     }
 
     string pdb = id.substr(0, id.find(":"));
-    idxCONT2PROT.push_back(sizePROT);
     if (!sizePROT || pdb.compare(pid[sizePROT - 1]))
     {
       pid.push_back(pdb);
@@ -108,6 +107,8 @@ void Database::loadDB(const char *dbfn)
     {
       psize[sizePROT - 1]++;
     }
+    idxCONT2PROT.push_back(sizePROT-1);
+    //printf("%d\n", sizePROT-1);
     sizeCONT++;
   }
   in.close();
@@ -171,7 +172,6 @@ void Database::search(const char *tfn, const char *res_fn)
   vector<int> dbhits(sizePROT, 0); // pdbid, number of database hits
   vector<int> hits(sizePROT, 0);  // pdbid, number of hits between target and database
   boost::dynamic_bitset<> bsstruct(sizeCONT);
-  boost::dynamic_bitset<> bscontact(sizeCONT);
   // int indexProtein = 0;
   // int pbegin = 0; // for indexContac2Proteion;
   // int pend = psize[0];
@@ -179,16 +179,20 @@ void Database::search(const char *tfn, const char *res_fn)
   // find alignments, calculate number of target/database hits
   cerr << "looking for alignments ..." << endl;
   bsstruct.reset();
+  //printf("haha!\n");
   #pragma omp parallel for
   for (int i = 0; i < tindex.size(); i++)
   {
+    boost::dynamic_bitset<> bscontact(sizeCONT);
     bscontact.set();
     for (int j = 0; j < sizeDIM; j++)
     {
       bscontact &= dbbs[j][tindex[i][j]];
     }
+    
     #pragma omp critical (bsstruct)
     bsstruct |= bscontact;
+    
 
     int indexPrev = -1;
     for (int j = bscontact.find_first(); j != bscontact.npos; j = bscontact.find_next(j))
@@ -200,8 +204,8 @@ void Database::search(const char *tfn, const char *res_fn)
       hits[indexProtein]++;
       if (indexProtein == indexPrev)
         continue;
-      #pragma omp atomic update
-      thits[indexProtein]++;
+        #pragma omp atomic update
+        thits[indexProtein]++;
       indexPrev = indexProtein;
     }
   }
