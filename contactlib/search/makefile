@@ -1,4 +1,4 @@
-CPP=g++ -O3 --std=c++11 -fPIC
+CPP=g++ -O3 --std=c++11 -fPIC -fopenmp
 
 all: libsearch.so
 

@@ -97,6 +97,7 @@ void Database::loadDB(const char *dbfn)
     }
 
     string pdb = id.substr(0, id.find(":"));
+    idxCONT2PROT.push_back(sizePROT);
     if (!sizePROT || pdb.compare(pid[sizePROT - 1]))
     {
       pid.push_back(pdb);
@@ -171,13 +172,14 @@ void Database::search(const char *tfn, const char *res_fn)
   vector<int> hits(sizePROT, 0);  // pdbid, number of hits between target and database
   boost::dynamic_bitset<> bsstruct(sizeCONT);
   boost::dynamic_bitset<> bscontact(sizeCONT);
-  int indexProtein = 0;
-  int pbegin = 0; // for indexContac2Proteion;
-  int pend = psize[0];
+  // int indexProtein = 0;
+  // int pbegin = 0; // for indexContac2Proteion;
+  // int pend = psize[0];
 
   // find alignments, calculate number of target/database hits
   cerr << "looking for alignments ..." << endl;
   bsstruct.reset();
+  #pragma omp parallel for
   for (int i = 0; i < tindex.size(); i++)
   {
     bscontact.set();
@@ -185,23 +187,28 @@ void Database::search(const char *tfn, const char *res_fn)
     {
       bscontact &= dbbs[j][tindex[i][j]];
     }
+    #pragma omp critical (bsstruct)
     bsstruct |= bscontact;
 
     int indexPrev = -1;
     for (int j = bscontact.find_first(); j != bscontact.npos; j = bscontact.find_next(j))
     {
-      indexContact2Protein(j, indexProtein, pbegin, pend);
+      //indexContact2Protein(j, indexProtein, pbegin, pend);
+      int indexProtein = idxCONT2PROT[j];
       //cerr << indexProtein << endl;
+      #pragma omp atomic update
       hits[indexProtein]++;
       if (indexProtein == indexPrev)
         continue;
+      #pragma omp atomic update
       thits[indexProtein]++;
       indexPrev = indexProtein;
     }
   }
   for (int i = bsstruct.find_first(); i != bsstruct.npos; i = bsstruct.find_next(i))
   {
-    indexContact2Protein(i, indexProtein, pbegin, pend);
+    //indexContact2Protein(i, indexProtein, pbegin, pend);
+    int indexProtein = idxCONT2PROT[i];
     dbhits[indexProtein]++;
   }
 

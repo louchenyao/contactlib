@@ -11,6 +11,7 @@ struct Database
   vector<string> pid; // PDB ID of each protein
   vector<int> psize;  // number of contact groups of each protein
 
+  vector<int> idxCONT2PROT;       // index converstion
 
   const int sizeSLOT = 161;                     // number of slots on each dimention
   int sizeCONT;                                 // number of contact groups in each slot
